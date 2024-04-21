@@ -3,50 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T-Shirt Inventory</title>
+    <title>Offside Outfits</title>
+    <style>
+        .tshirt-details {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: inline-block; /* Display as inline block */
+        }
+    </style>
 </head>
 <body>
-<h1>T-Shirt Inventory</h1>
-<div id="tshirt-list"></div>
+    <h1>Offside Outfits</h1>
+    <div id="tshirt-list"></div>
+    <button onclick="goToCart()">Go to Cart</button>
 
-<script>
-    // Fetch data from backend
-    function fetchDataAndUpdateUI() {
-        const headers = new Headers({
-            'Authorization': 'Basic ' + btoa('user:password')
-        });
-    
-        fetch('http://127.0.0.1:8081/TShirts', { headers })
-            .then(response => response.json())
-            .then(data => {
-                renderTShirts(data);
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }
-    
-    
-    function renderTShirts(tShirts) {
+    <script>
+        let cart = [];
+
+        function addToCart(tShirtId) {
+            // Check if the selected T-shirt is already in the cart
+            const isAlreadyInCart = cart.some(item => item.tShirtId === tShirtId);
+            if (!isAlreadyInCart) {
+                // Find the selected T-shirt by its ID
+                const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
+                // Add the selected T-shirt to the cart
+                cart.push(selectedTShirt);
+                console.log('Added to cart:', selectedTShirt);
+            } else {
+                console.log('This item is already in the cart.');
+            }
+        }
+
+        function goToCart() {
+            // Store the cart in localStorage to be retrieved on the cart page
+            localStorage.setItem('cart', JSON.stringify(cart));
+            // Navigate to the cart page
+            window.location.href = 'cart.html';
+        }
+
+        const tShirts = [{"tShirtId":15,"appUser":null,"size":"M","year":2008,"kit":"Home","number":7,"condition":"Good","price":200}];
+
         const tShirtsContainer = document.getElementById('tshirt-list');
         tShirtsContainer.innerHTML = ''; // Clear existing content
-    
+
         tShirts.forEach(tShirt => {
             const tShirtElement = document.createElement('div');
-            tShirtElement.classList.add('tshirt'); // Optional: Add a class for styling
-    
+            tShirtElement.classList.add('tshirt-details');
+
             tShirtElement.innerHTML = `
-          <p>T-Shirt ID: ${tShirt.tShirtId}</p>
-          <p>Size: ${tShirt.size}</p>
-          <p>Kit: ${tShirt.kit}</p>
-          <!-- Add more details as needed -->
-        `;
-    
+                <p>T-Shirt ID: ${tShirt.tShirtId}</p>
+                <p>Size: ${tShirt.size}</p>
+                <p>Year: ${tShirt.year}</p>
+                <p>Kit: ${tShirt.kit}</p>
+                <p>Number: ${tShirt.number}</p>
+                <p>Condition: ${tShirt.condition}</p>
+                <p>Price: £${tShirt.price}</p>
+                <button onclick="addToCart(${tShirt.tShirtId})">Add to Cart</button>
+            `;
+
             tShirtsContainer.appendChild(tShirtElement);
         });
-    }
-    
-    
-    document.addEventListener('DOMContentLoaded', fetchDataAndUpdateUI);
-    
-</script>
+    </script>
 </body>
 </html>

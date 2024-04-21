@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        .cart-item {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Center align items vertically */
+            display: inline-block; /* Display as inline block */
+
+        }
+        .cart-item p {
+            margin: 0; /* Remove default margins */
+        }
+        .cart-item-id {
+            flex: 1; /* Take up remaining space */
+        }
+    </style>
+</head>
+<body>
+    <h1>Your cart items:</h1>
+    <div id="cart-items"></div>
+
+    <button onclick="continueShopping()">Continue Shopping</button>
+
+    <script>
+        // Retrieve cart from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart'));
+
+        const cartItemsContainer = document.getElementById('cart-items');
+
+        if (cart && cart.length > 0) {
+            cart.forEach(tShirt => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item'); // Add cart-item class for styling
+                cartItem.innerHTML = `
+                    <p class="cart-item-id">T-Shirt ID: ${tShirt.tShirtId}</p>
+                    <p>Price: £${tShirt.price}</p>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+        } else {
+            cartItemsContainer.textContent = 'Your cart is empty.';
+        }
+
+        function continueShopping() {
+            window.location.href = "index.html"; // Change 'original_page.html' to the URL of your original page
+        }
+    </script>
+</body>
+</html>
