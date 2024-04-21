@@ -5,15 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offside Outfits</title>
     <style>
-        #tshirt-list {
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-            display: inline-block; /* Display as inline block */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
         }
-        .btn{
-            display: block; /* Display as inline block */
+        
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        #tshirt-list {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 400px; /* Adjusted max-width */
+    background-color: #fff;
+}
+
+
+        .tshirt {
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+        }
+
+        .tshirt p {
+            margin: 5px 0;
+        }
+
+        .tshirt button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tshirt button:hover {
+            background-color: #45a049;
+        }
+
+        .btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -22,71 +73,70 @@
     <div id="tshirt-list"></div>
     <button class="btn" onclick="goToCart()">Go to Cart</button>
 
-    <script>
-        let cart = [];
-        let tShirts = []; // Define tShirts globally
+    <script src="./index.js">
+    //     let cart = [];
+    //     let tShirts = []; // Define tShirts globally
 
-        function fetchDataAndUpdateUI() {
-            const headers = new Headers({
-                'Authorization': 'Basic ' + btoa('user:password')
-            });
+    //     function fetchDataAndUpdateUI() {
+    //         const headers = new Headers({
+    //             'Authorization': 'Basic ' + btoa('user:password')
+    //         });
 
-            fetch('http://127.0.0.1:8081/TShirts', { headers })
-                .then(response => response.json())
-                .then(data => {
-                    tShirts = data; // Assign fetched data to tShirts
-                    renderTShirts();
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
+    //         fetch('http://127.0.0.1:8081/TShirts', { headers })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 tShirts = data; // Assign fetched data to tShirts
+    //                 renderTShirts();
+    //             })
+    //             .catch(error => console.error('Error fetching data:', error));
+    //     }
 
-        function renderTShirts() {
-            const tShirtsContainer = document.getElementById('tshirt-list');
-            tShirtsContainer.innerHTML = ''; // Clear existing content
+    //     function renderTShirts() {
+    //         const tShirtsContainer = document.getElementById('tshirt-list');
+    //         tShirtsContainer.innerHTML = ''; // Clear existing content
 
-            tShirts.forEach(tShirt => {
-                const tShirtElement = document.createElement('div');
-                tShirtElement.classList.add('tshirt'); // Optional: Add a class for styling
+    //         tShirts.forEach(tShirt => {
+    //             const tShirtElement = document.createElement('div');
+    //             tShirtElement.classList.add('tshirt'); // Optional: Add a class for styling
 
-                tShirtElement.innerHTML = `
-                    <p>T-Shirt ID: ${tShirt.tShirtId}</p>
-                    <p>Size: ${tShirt.size}</p>
-                    <p>Kit: ${tShirt.kit}</p>
-                    <p>Number: ${tShirt.number}</p>
-                    <p>Condition: ${tShirt.condition}</p>
-                    <p>Price: £${tShirt.price}</p>
-                    <button onclick="addToCart(${tShirt.tShirtId})">Add to Cart</button>
-                `;
+    //             tShirtElement.innerHTML = `
+    //                 <p>T-Shirt ID: ${tShirt.tShirtId}</p>
+    //                 <p>Size: ${tShirt.size}</p>
+    //                 <p>Kit: ${tShirt.kit}</p>
+    //                 <p>Number: ${tShirt.number}</p>
+    //                 <p>Condition: ${tShirt.condition}</p>
+    //                 <p>Price: £${tShirt.price}</p>
+    //                 <button onclick="addToCart(${tShirt.tShirtId})">Add to Cart</button>
+    //             `;
 
-                tShirtsContainer.appendChild(tShirtElement);
-            });
-        }
+    //             tShirtsContainer.appendChild(tShirtElement);
+    //         });
+    //     }
 
-        function addToCart(tShirtId) {
-    // Find the selected T-shirt by its ID
-    const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
+    //     function addToCart(tShirtId) {
+    //         // Find the selected T-shirt by its ID
+    //         const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
 
-    // Check if the item is already in the cart
-    const alreadyInCart = cart.some(item => item.tShirtId === tShirtId);
+    //         // Check if the item is already in the cart
+    //         const alreadyInCart = cart.some(item => item.tShirtId === tShirtId);
 
-    if (alreadyInCart) {
-        alert('This item is already in the cart!');
-    } else {
-        // Add the selected T-shirt to the cart array
-        cart.push(selectedTShirt);
-        alert('T-Shirt added to cart!');
-    }
-}
+    //         if (alreadyInCart) {
+    //             alert('This item is already in the cart!');
+    //         } else {
+    //             // Add the selected T-shirt to the cart array
+    //             cart.push(selectedTShirt);
+    //             alert('T-Shirt added to cart!');
+    //         }
+    //     }
 
+    //     function goToCart() {
+    //         // Store the cart in localStorage to be retrieved on the cart page
+    //         localStorage.setItem('cart', JSON.stringify(cart));
+    //         // Navigate to the cart page
+    //         window.location.href = 'cart.html';
+    //     }
 
-        function goToCart() {
-            // Store the cart in localStorage to be retrieved on the cart page
-            localStorage.setItem('cart', JSON.stringify(cart));
-            // Navigate to the cart page
-            window.location.href = 'cart.html';
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchDataAndUpdateUI);
-    </script>
+    //     document.addEventListener('DOMContentLoaded', fetchDataAndUpdateUI);
+    // </script>
 </body>
 </html>
