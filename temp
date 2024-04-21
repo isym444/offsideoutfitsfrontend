@@ -1,22 +1,49 @@
-{% comment %} fetch('/TShirts')
-    .then(response => response.json())
-    .then(data => {
-        // Process the received data
-        const tShirts = data;
-        const tShirtListContainer = document.getElementById('tshirt-list');
+// {% comment %} fetch('/TShirts')
+//     .then(response => response.json())
+//     .then(data => {
+//         // Process the received data
+//         const tShirts = data;
+//         const tShirtListContainer = document.getElementById('tshirt-list');
 
-        // Render the T-shirts
-        tShirts.forEach(tShirt => {
-            const tShirtElement = document.createElement('div');
-            tShirtElement.innerHTML = `
-                        <h3>${tShirt.brand}</h3>
-                        <p>Size: ${tShirt.size}</p>
-                        <p>Color: ${tShirt.color}</p>
-                        <p>Price: $${tShirt.price}</p>
-                    `;
-            tShirtListContainer.appendChild(tShirtElement);
+//         // Render the T-shirts
+//         tShirts.forEach(tShirt => {
+//             const tShirtElement = document.createElement('div');
+//             tShirtElement.innerHTML = `
+//                         <h3>${tShirt.brand}</h3>
+//                         <p>Size: ${tShirt.size}</p>
+//                         <p>Color: ${tShirt.color}</p>
+//                         <p>Price: $${tShirt.price}</p>
+//                     `;
+//             tShirtListContainer.appendChild(tShirtElement);
+//         });
+//     })
+//     .catch(error => {
+//         console.error('Error fetching T-shirts:', error);
+//     }); {% endcomment %}
+
+User
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offside Outfits</title>
+</head>
+<body>
+<h1>Offside Outfits</h1>
+<div id="tshirt-list"></div>
+
+<script>
+    // Fetch data from backend
+    function fetchDataAndUpdateUI() {
+        const headers = new Headers({
+            'Authorization': 'Basic ' + btoa('user:password')
         });
-    })
-    .catch(error => {
-        console.error('Error fetching T-shirts:', error);
-    }); {% endcomment %}
+    
+        fetch('http://127.0.0.1:8081/TShirts', { headers })
+            .then(response => response.json())
+            .then(data => {
+                renderTShirts(data);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }

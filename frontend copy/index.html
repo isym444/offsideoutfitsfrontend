@@ -5,35 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offside Outfits</title>
     <style>
-        .tshirt-details {
+        #tshirt-list {
             border: 2px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 20px;
             display: inline-block; /* Display as inline block */
         }
+        .btn{
+            display: block; /* Display as inline block */
+        }
     </style>
 </head>
 <body>
     <h1>Offside Outfits</h1>
     <div id="tshirt-list"></div>
-    <button onclick="goToCart()">Go to Cart</button>
+    <button class="btn" onclick="goToCart()">Go to Cart</button>
 
     <script>
         let cart = [];
+        let tShirts = []; // Define tShirts globally
+
+        function fetchDataAndUpdateUI() {
+            const headers = new Headers({
+                'Authorization': 'Basic ' + btoa('user:password')
+            });
+
+            fetch('http://127.0.0.1:8081/TShirts', { headers })
+                .then(response => response.json())
+                .then(data => {
+                    tShirts = data; // Assign fetched data to tShirts
+                    renderTShirts();
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function renderTShirts() {
+            const tShirtsContainer = document.getElementById('tshirt-list');
+            tShirtsContainer.innerHTML = ''; // Clear existing content
+
+            tShirts.forEach(tShirt => {
+                const tShirtElement = document.createElement('div');
+                tShirtElement.classList.add('tshirt'); // Optional: Add a class for styling
+
+                tShirtElement.innerHTML = `
+                    <p>T-Shirt ID: ${tShirt.tShirtId}</p>
+                    <p>Size: ${tShirt.size}</p>
+                    <p>Kit: ${tShirt.kit}</p>
+                    <p>Number: ${tShirt.number}</p>
+                    <p>Condition: ${tShirt.condition}</p>
+                    <p>Price: £${tShirt.price}</p>
+                    <button onclick="addToCart(${tShirt.tShirtId})">Add to Cart</button>
+                `;
+
+                tShirtsContainer.appendChild(tShirtElement);
+            });
+        }
 
         function addToCart(tShirtId) {
-            // Check if the selected T-shirt is already in the cart
-            const isAlreadyInCart = cart.some(item => item.tShirtId === tShirtId);
-            if (!isAlreadyInCart) {
-                // Find the selected T-shirt by its ID
-                const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
-                // Add the selected T-shirt to the cart
-                cart.push(selectedTShirt);
-                console.log('Added to cart:', selectedTShirt);
-            } else {
-                console.log('This item is already in the cart.');
-            }
+            // Find the selected T-shirt by its ID
+            const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
+            // Add the selected T-shirt to the cart array
+            cart.push(selectedTShirt);
+            alert('T-Shirt added to cart!');
         }
 
         function goToCart() {
@@ -43,50 +77,7 @@
             window.location.href = 'cart.html';
         }
 
-        const tShirts = [{"tShirtId":15,"appUser":null,"size":"M","year":2008,"kit":"Home","number":7,"condition":"Good","price":200}];
-
-        const tShirtsContainer = document.getElementById('tshirt-list');
-        tShirtsContainer.innerHTML = ''; // Clear existing content
-
-        tShirts.forEach(tShirt => {
-            const tShirtElement = document.createElement('div');
-            tShirtElement.classList.add('tshirt-details');
-
-            tShirtElement.innerHTML = `
-                <p>T-Shirt ID: ${tShirt.tShirtId}</p>
-                <p>Size: ${tShirt.size}</p>
-                <p>Year: ${tShirt.year}</p>
-                <p>Kit: ${tShirt.kit}</p>
-                <p>Number: ${tShirt.number}</p>
-                <p>Condition: ${tShirt.condition}</p>
-                <p>Price: £${tShirt.price}</p>
-                <button onclick="addToCart(${tShirt.tShirtId})">Add to Cart</button>
-            `;
-
-            tShirtsContainer.appendChild(tShirtElement);
-        });
-        fetch('/TShirts')
-    .then(response => response.json())
-    .then(data => {
-        // Process the received data
-        const tShirts = data;
-        const tShirtListContainer = document.getElementById('tshirt-list');
-
-        // Render the T-shirts
-        tShirts.forEach(tShirt => {
-            const tShirtElement = document.createElement('div');
-            tShirtElement.innerHTML = `
-                        <h3>${tShirt.brand}</h3>
-                        <p>Size: ${tShirt.size}</p>
-                        <p>Color: ${tShirt.color}</p>
-                        <p>Price: $${tShirt.price}</p>
-                    `;
-            tShirtListContainer.appendChild(tShirtElement);
-        });
-    })
-    .catch(error => {
-        console.error('Error fetching T-shirts:', error);
-    })
+        document.addEventListener('DOMContentLoaded', fetchDataAndUpdateUI);
     </script>
 </body>
 </html>
