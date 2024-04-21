@@ -143,7 +143,7 @@ function addToCart(tShirtId) {
         alert('This item is already in the cart!');
     } else {
         cart.push(selectedTShirt);
-        linkShopperToTShirt(tshirtId, 252)
+        linkShopperToTShirt(tShirtId, 252)
         alert('T-Shirt added to cart!');
     }
 }
