@@ -63,12 +63,21 @@
         }
 
         function addToCart(tShirtId) {
-            // Find the selected T-shirt by its ID
-            const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
-            // Add the selected T-shirt to the cart array
-            cart.push(selectedTShirt);
-            alert('T-Shirt added to cart!');
-        }
+    // Find the selected T-shirt by its ID
+    const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
+
+    // Check if the item is already in the cart
+    const alreadyInCart = cart.some(item => item.tShirtId === tShirtId);
+
+    if (alreadyInCart) {
+        alert('This item is already in the cart!');
+    } else {
+        // Add the selected T-shirt to the cart array
+        cart.push(selectedTShirt);
+        alert('T-Shirt added to cart!');
+    }
+}
+
 
         function goToCart() {
             // Store the cart in localStorage to be retrieved on the cart page
