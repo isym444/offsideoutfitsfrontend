@@ -67,6 +67,34 @@
 let cart = [];
 let tShirts = [];
 
+// Function to link a TShirt to a Shopper
+function linkShopperToTShirt(tShirtId, shopperId) {
+    const headers = new Headers({
+        'Authorization': 'Basic ' + btoa('user:password'),
+        'Content-Type': 'application/json'
+    });
+
+    fetch(`http://127.0.0.1:8081/TShirts/${tShirtId}/${shopperId}`, {
+        method: 'PUT',
+        headers: headers
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to link T-Shirt with Shopper');
+        }
+    })
+    .then(data => {
+        console.log('Link successful:', data);
+        alert('T-Shirt linked successfully to Shopper!');
+    })
+    .catch(error => {
+        console.error('Error linking T-Shirt to Shopper:', error);
+        alert('Error linking T-Shirt to Shopper!');
+    });
+}
+
 // Function to fetch data and update UI
 async function fetchDataAndUpdateUI() {
     try {
@@ -115,9 +143,12 @@ function addToCart(tShirtId) {
         alert('This item is already in the cart!');
     } else {
         cart.push(selectedTShirt);
+        linkShopperToTShirt(tshirtId, 252)
         alert('T-Shirt added to cart!');
     }
 }
+
+
 
 // Function to navigate to cart page
 function goToCart() {
