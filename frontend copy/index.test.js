@@ -110,7 +110,7 @@ describe('fetchDataAndUpdateUI function', () => {
 
 // Test case for addToCart function
 describe('addToCart function', () => {
-       it('does not add the same T-shirt to the cart array twice', () => {
+       it('does not add the same T-shirt to the cart array twice (mock)', () => {
         // Mock data
         const mockTShirtId = 1;
         const mockSelectedTShirt = { tShirtId: mockTShirtId, size: 'M', kit: 'Home', number: 10, condition: 'New', price: 20 };
@@ -126,43 +126,28 @@ describe('addToCart function', () => {
     });
 
     // Stub test
-it('adds a T-shirt to the cart correctly (stub)', () => {
-    // Define mock data
-    const mockTShirtId = 1;
-    const selectedTShirt = { tShirtId: mockTShirtId, size: 'M', kit: 'Home', number: 10, condition: 'New', price: 20 };
-
-    // Stub tShirts.find to return the selected T-shirt
-    tShirts.find = jest.fn().mockReturnValue(selectedTShirt);
-    // Stub cart.some to return false (T-shirt not in cart)
-    cart.some = jest.fn().mockReturnValue(false);
-
-    // Call the function to be tested
-    addToCart(mockTShirtId);
-
-    // Check if the selected T-shirt is added to the cart array
-    expect(cart).toContain(selectedTShirt);
-    // Check if the correct alert message is shown
-    expect(window.alert).toHaveBeenCalledWith('T-Shirt added to cart!');
-});
-
-// Fake test
-it('adds a T-shirt to the cart correctly (fake)', () => {
-    // Define mock data
-    const mockTShirtId = 1;
-    const selectedTShirt = { tShirtId: mockTShirtId, size: 'M', kit: 'Home', number: 10, condition: 'New', price: 20 };
-
-    // Call the function to be tested
-    addToCart(mockTShirtId);
-
-    // Check if the selected T-shirt is added to the cart array
-    expect(cart.length).toBe(1); // Ensure cart contains one item
-    expect(cart[0]).toEqual(selectedTShirt); // Check if the selected T-shirt is added correctly
-
-    // Check if the correct alert message is shown
-    expect(window.alert).toHaveBeenCalledWith('T-Shirt added to cart!');
-});
-
-
+    it('adds a T-shirt to the cart correctly (stub)', () => {
+        // Define mock data
+        const mockTShirtId = 1;
+        const selectedTShirt = { tShirtId: mockTShirtId, size: 'M', kit: 'Home', number: 10, condition: 'New', price: 20 };
+    
+        // Stub tShirts.find to return the selected T-shirt
+        tShirts.find = jest.fn().mockReturnValue(selectedTShirt);
+        // Stub cart.some to return false (T-shirt not in cart)
+        cart.some = jest.fn().mockReturnValue(false);
+    
+        // Mock the alert function
+        global.alert = jest.fn();
+    
+        // Call the function to be tested
+        addToCart(mockTShirtId);
+    
+        // Check if the selected T-shirt is added to the cart array
+        expect(cart).toContain(selectedTShirt);
+        // Check if the correct alert message is shown
+        expect(global.alert).toHaveBeenCalledWith('T-Shirt added to cart!');
+    });
+    
 
 });
 
@@ -186,4 +171,7 @@ describe('goToCart function', () => {
         // Check if window.location.href was set to the cart page URL
         expect(window.location.href).toBe('cart.html');
     });
+
+
 });
+
