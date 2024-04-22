@@ -21,6 +21,40 @@
         .cart-item-id {
             flex: 1; /* Take up remaining space */
         }
+        .cart-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center align items vertically */
+    display: inline-block; /* Display as inline block */
+}
+
+.cart-item p {
+    margin: 0; /* Remove default margins */
+}
+
+.cart-item-id {
+    flex: 1; /* Take up remaining space */
+}
+
+button {
+    display: block; /* Display as block */
+    margin-top: 20px; /* Add some space at the top */
+    padding: 10px 20px; /* Padding for button */
+    background-color: #007bff; /* Button background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add border radius */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+button:hover {
+    background-color: #0056b3; /* Button background color on hover */
+}
+
     </style>
 </head>
 <body>
@@ -30,28 +64,41 @@
     <button onclick="continueShopping()">Continue Shopping</button>
 
     <script>
-        // Retrieve cart from localStorage
-        const cart = JSON.parse(localStorage.getItem('cart'));
-
-        const cartItemsContainer = document.getElementById('cart-items');
-
-        if (cart && cart.length > 0) {
-            cart.forEach(tShirt => {
-                const cartItem = document.createElement('div');
-                cartItem.classList.add('cart-item'); // Add cart-item class for styling
-                cartItem.innerHTML = `
-                    <p class="cart-item-id">T-Shirt ID: ${tShirt.tShirtId}</p>
-                    <p>Price: £${tShirt.price}</p>
-                `;
-                cartItemsContainer.appendChild(cartItem);
+        async function fetchCartItems() {
+            const headers = new Headers({
+                'Authorization': 'Basic ' + btoa('user:password')
             });
-        } else {
-            cartItemsContainer.textContent = 'Your cart is empty.';
+
+            const response = await fetch('http://127.0.0.1:8081/TShirts/252', { headers });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const cartItems = await response.json();
+
+
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = ''; // Clear the container
+
+            if (cartItems.length > 0) {
+                cartItems.forEach(tShirt => {
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <p class="cart-item-id">T-Shirt ID: ${tShirt.tShirtId}</p>
+                        <p>Price: £${tShirt.price}</p>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+            } else {
+                cartItemsContainer.textContent = 'Your cart is empty.';
+            }
         }
 
         function continueShopping() {
-            window.location.href = "index.html"; // Change 'original_page.html' to the URL of your original page
+            window.location.href = "index.html"; 
         }
+
+        document.addEventListener('DOMContentLoaded', fetchCartItems);
     </script>
 </body>
 </html>

@@ -5,66 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offside Outfits</title>
     <style>
-        .tshirt-details {
-            border: 2px solid #ccc;
-            border-radius: 5px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        #tshirt-list {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 400px; /* Adjusted max-width */
+    background-color: #fff;
+}
+
+
+        .tshirt {
+            border-bottom: 1px solid #eee;
             padding: 10px;
-            margin-bottom: 20px;
-            display: inline-block; /* Display as inline block */
+        }
+
+        .tshirt p {
+            margin: 5px 0;
+        }
+
+        .tshirt button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tshirt button:hover {
+            background-color: #45a049;
+        }
+
+        .btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <h1>Offside Outfits</h1>
     <div id="tshirt-list"></div>
-    <button onclick="goToCart()">Go to Cart</button>
+    <button class="btn" onclick="goToCart()">Go to Cart</button>
 
-    <script>
-        let cart = [];
-
-        function addToCart(tShirtId) {
-            // Check if the selected T-shirt is already in the cart
-            const isAlreadyInCart = cart.some(item => item.tShirtId === tShirtId);
-            if (!isAlreadyInCart) {
-                // Find the selected T-shirt by its ID
-                const selectedTShirt = tShirts.find(tShirt => tShirt.tShirtId === tShirtId);
-                // Add the selected T-shirt to the cart
-                cart.push(selectedTShirt);
-                console.log('Added to cart:', selectedTShirt);
-            } else {
-                console.log('This item is already in the cart.');
-            }
-        }
-
-        function goToCart() {
-            // Store the cart in localStorage to be retrieved on the cart page
-            localStorage.setItem('cart', JSON.stringify(cart));
-            // Navigate to the cart page
-            window.location.href = 'cart.html';
-        }
-
-        const tShirts = [{"tShirtId":15,"appUser":null,"size":"M","year":2008,"kit":"Home","number":7,"condition":"Good","price":200}];
-
-        const tShirtsContainer = document.getElementById('tshirt-list');
-        tShirtsContainer.innerHTML = ''; // Clear existing content
-
-        tShirts.forEach(tShirt => {
-            const tShirtElement = document.createElement('div');
-            tShirtElement.classList.add('tshirt-details');
-
-            tShirtElement.innerHTML = `
-                <p>T-Shirt ID: ${tShirt.tShirtId}</p>
-                <p>Size: ${tShirt.size}</p>
-                <p>Year: ${tShirt.year}</p>
-                <p>Kit: ${tShirt.kit}</p>
-                <p>Number: ${tShirt.number}</p>
-                <p>Condition: ${tShirt.condition}</p>
-                <p>Price: £${tShirt.price}</p>
-                <button onclick="addToCart(${tShirt.tShirtId})">Add to Cart</button>
-            `;
-
-            tShirtsContainer.appendChild(tShirtElement);
-        });
+    <script src="./index.js">
     </script>
 </body>
 </html>
