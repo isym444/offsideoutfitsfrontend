@@ -64,28 +64,41 @@ button:hover {
     <button onclick="continueShopping()">Continue Shopping</button>
 
     <script>
-        // Retrieve cart from localStorage
-        const cart = JSON.parse(localStorage.getItem('cart'));
-
-        const cartItemsContainer = document.getElementById('cart-items');
-
-        if (cart && cart.length > 0) {
-            cart.forEach(tShirt => {
-                const cartItem = document.createElement('div');
-                cartItem.classList.add('cart-item'); // Add cart-item class for styling
-                cartItem.innerHTML = `
-                    <p class="cart-item-id">T-Shirt ID: ${tShirt.tShirtId}</p>
-                    <p>Price: £${tShirt.price}</p>
-                `;
-                cartItemsContainer.appendChild(cartItem);
+        async function fetchCartItems() {
+            const headers = new Headers({
+                'Authorization': 'Basic ' + btoa('user:password')
             });
-        } else {
-            cartItemsContainer.textContent = 'Your cart is empty.';
+
+            const response = await fetch('http://127.0.0.1:8081/TShirts/252', { headers });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const cartItems = await response.json();
+
+
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = ''; // Clear the container
+
+            if (cartItems.length > 0) {
+                cartItems.forEach(tShirt => {
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <p class="cart-item-id">T-Shirt ID: ${tShirt.tShirtId}</p>
+                        <p>Price: £${tShirt.price}</p>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+            } else {
+                cartItemsContainer.textContent = 'Your cart is empty.';
+            }
         }
 
         function continueShopping() {
             window.location.href = "index.html"; 
         }
+
+        document.addEventListener('DOMContentLoaded', fetchCartItems);
     </script>
 </body>
 </html>
